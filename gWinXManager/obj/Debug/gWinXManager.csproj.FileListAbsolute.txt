@@ -1,0 +1,2 @@
+C:\Users\ZhongBo\AppData\Local\Temporary Projects\gWinXManager\bin\Debug\gWinXManager.exe.config
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\gWinXManager.exe.config
