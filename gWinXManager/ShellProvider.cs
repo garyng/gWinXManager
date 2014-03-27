@@ -14,8 +14,9 @@ using MS.WindowsAPICodePack.Internal;
 
 namespace gWinXManager
 {
-	class ShellProvider
+	namespace ShellProvider
 	{
+
 		#region Struct
 
 		[StructLayout(LayoutKind.Explicit, Size = 520)]
@@ -419,38 +420,43 @@ namespace gWinXManager
 
 		#endregion
 
-		#region Win32API
+		#region Win32Apis
+		
+		public static class APIs
+		{
+			public const int S_OK = 0x00000000;
 
+			[DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
+			public static extern void SHCreateItemFromParsingName(
+				[In][MarshalAs(UnmanagedType.LPWStr)] string pszPath,
+				[In] IntPtr pbc,
+				[In][MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+				[Out][MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out IShellItem2 ppv);
 
-		[DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
-		public static extern void SHCreateItemFromParsingName(
-			[In][MarshalAs(UnmanagedType.LPWStr)] string pszPath,
-			[In] IntPtr pbc,
-			[In][MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-			[Out][MarshalAs(UnmanagedType.Interface, IidParameterIndex = 2)] out IShellItem2 ppv);
-
-		[DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
-		public static extern int HashData(
-		 [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] 
-	byte[] pbData,
-		 int cbData,
-		 [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 3)] 
-	byte[] piet,
-		int outputLen);
+			[DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
+			public static extern int HashData(
+			 [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)] byte[] pbData,
+			int cbData,
+			 [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 3)] byte[] piet,
+			int outputLen);
+		}
 
 		#endregion
 
 		#region GUIDs
 
-		public static PropertyKey PKEY_Link_Comment = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 5);
-		public static PropertyKey PKEY_Link_DateVisited = new PropertyKey(new Guid("5cbf2787-48cf-4208-b90e-ee5e5d420294"), 23);
-		public static PropertyKey PKEY_Link_Description = new PropertyKey(new Guid("5cbf2787-48cf-4208-b90e-ee5e5d420294"), 21);
-		public static PropertyKey PKEY_Link_Status = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 3);
-		public static PropertyKey PKEY_Link_TargetExtension = new PropertyKey(new Guid("7a7d76f4-b630-4bd7-95ff-37cc51a975c9"), 2);
-		public static PropertyKey PKEY_Link_TargetParsingPath = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 2);
-		public static PropertyKey PKEY_Link_TargetSFGAOFlags = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 8);
-		public static PropertyKey PKEY_Link_Arguments = new PropertyKey(new Guid("436f2667-14e2-4feb-b30a-146c53b5b674"), 100);
-		public static PropertyKey PKEY_WinX_Hash = new PropertyKey(new Guid("fb8d2d7b-90d1-4e34-bf60-6eac09922bbf"), 2);
+		public static class PropertyKeys
+		{
+			public static PropertyKey PKEY_Link_Comment = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 5);
+			public static PropertyKey PKEY_Link_DateVisited = new PropertyKey(new Guid("5cbf2787-48cf-4208-b90e-ee5e5d420294"), 23);
+			public static PropertyKey PKEY_Link_Description = new PropertyKey(new Guid("5cbf2787-48cf-4208-b90e-ee5e5d420294"), 21);
+			public static PropertyKey PKEY_Link_Status = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 3);
+			public static PropertyKey PKEY_Link_TargetExtension = new PropertyKey(new Guid("7a7d76f4-b630-4bd7-95ff-37cc51a975c9"), 2);
+			public static PropertyKey PKEY_Link_TargetParsingPath = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 2);
+			public static PropertyKey PKEY_Link_TargetSFGAOFlags = new PropertyKey(new Guid("b9b4b3fc-2b51-4a42-b5d8-324146afcf25"), 8);
+			public static PropertyKey PKEY_Link_Arguments = new PropertyKey(new Guid("436f2667-14e2-4feb-b30a-146c53b5b674"), 100);
+			public static PropertyKey PKEY_WinX_Hash = new PropertyKey(new Guid("fb8d2d7b-90d1-4e34-bf60-6eac09922bbf"), 2);
+		}
 
 		#endregion
 	}
