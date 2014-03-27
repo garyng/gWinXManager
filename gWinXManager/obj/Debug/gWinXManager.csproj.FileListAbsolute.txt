@@ -1,2 +1,19 @@
 C:\Users\ZhongBo\AppData\Local\Temporary Projects\gWinXManager\bin\Debug\gWinXManager.exe.config
 C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\gWinXManager.exe.config
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager.csprojResolveAssemblyReference.cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\MainWindow.baml
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\MainWindow.g.cs
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\App.g.cs
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager_MarkupCompile.cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager.g.resources
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager.Properties.Resources.resources
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager.csproj.GenerateResource.Cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\gWinXManager.exe
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\gWinXManager.pdb
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\Microsoft.WindowsAPICodePack.ExtendedLinguisticServices.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\Microsoft.WindowsAPICodePack.Sensors.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\Microsoft.WindowsAPICodePack.Shell.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\bin\Debug\Microsoft.WindowsAPICodePack.ShellExtensions.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager.exe
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager\obj\Debug\gWinXManager.pdb
