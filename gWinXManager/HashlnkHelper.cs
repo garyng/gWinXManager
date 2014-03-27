@@ -112,7 +112,10 @@ namespace gWinXManager
 			int hr;
 			string args;
 			hr = isi.GetString(PropertyKeys.PKEY_Link_Arguments, out args);
-			checkResult(hr, TargetNotFound);
+			if (hr != APIs.S_OK && hr != APIs.HRESULT_FROM_WIN32(APIs.ERROR_NOT_FOUND))
+			{
+				throw TargetNotFound;
+			}
 
 			return args;
 		}

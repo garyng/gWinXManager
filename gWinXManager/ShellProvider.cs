@@ -424,7 +424,13 @@ namespace gWinXManager
 		
 		public static class APIs
 		{
+			#region Const
+			
 			public const int S_OK = 0x00000000;
+			public const int FACILITY_WIN32 = unchecked((int)0x80070000);
+			public const int ERROR_NOT_FOUND = 1168;
+
+			#endregion
 
 			[DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
 			public static extern void SHCreateItemFromParsingName(
@@ -439,6 +445,12 @@ namespace gWinXManager
 			int cbData,
 			 [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 3)] byte[] piet,
 			int outputLen);
+
+			public static int HRESULT_FROM_WIN32(int hResult)
+			{
+				return hResult <= 0 ? hResult : ((hResult & 0x0000FFFF) | FACILITY_WIN32);
+			}
+
 		}
 
 		#endregion
