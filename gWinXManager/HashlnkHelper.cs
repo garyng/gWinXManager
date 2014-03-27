@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using gWinXManager.ShellProvider;
@@ -15,7 +16,17 @@ namespace gWinXManager
 		public static Exception PathNotFound = new Exception("Specific file does not exist.");
 		public static Exception TargetNotFound = new Exception("Failed to retrieve target arguments.");
 		public static Exception HashFailed = new Exception("Failed to hash data.");
-		public static Exception PropertyStoreFailed = new Exception("Failed to get property store.")
+		public static Exception PropertyStoreFailed = new Exception("Failed to get property store.");
+
+		struct PathGUID
+		{
+			public string path;
+			public string GUID;
+		}
+
+		const string FOLDERID_ProgramFiles = "{905e63b6-c1bf-494e-b29c-65b732d3d21a}";
+		const string FOLDERID_System = "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}";
+		const string FOLDERID_Windows = "{F38BF404-1D43-42F2-9305-67DE0B28FC23}";
 
 		public HashlnkHelper(string FilePath)
 		{
@@ -88,20 +99,74 @@ namespace gWinXManager
 			return ips;
 		}
 
+		private void setHash(IPropertyStore ips, UInt32 hash)
+		{
+			
+		}
+
+		private string getProgramFilesPath()
+		{
+			if (Environment.Is64BitOperatingSystem)
+			{
+				return Environment.GetEnvironmentVariable("ProgramW6432");
+			}
+			else
+			{
+				return Environment.GetEnvironmentVariable("ProgramFiles");
+			}
+		}
+
+		private string generalizePath(string filepath)
+		{
+			PathGUID[] pg = new PathGUID[3]
+			{
+				new PathGUID()
+				{
+					path = getProgramFilesPath(),
+					GUID = FOLDERID_ProgramFiles
+				},
+				new PathGUID()
+				{
+					path = Environment.GetEnvironmentVariable("SystemRoot") + "\\System32",
+					GUID = FOLDERID_System
+				},
+				new PathGUID()
+				{
+					path = Environment.GetEnvironmentVariable("SystemRoot"),
+					GUID = FOLDERID_Windows
+				}
+			};
+			string generalizedPath = filepath;
+			CompareInfo comp = CultureInfo.InvariantCulture.CompareInfo;
+			for (int i = 0; i <	pg.Count(); i++)
+			{
+				if (comp.IsPrefix(filepath, pg[i].path, CompareOptions.IgnoreCase))
+				{
+					generalizedPath = pg[i].GUID + generalizedPath.Substring(pg[i].path.Length);
+					break;
+				}
+			}
+			return generalizedPath;
+		}
+
 		private bool checkResult(int hResult)
 		{
 			return hResult == APIs.S_OK;
 		}
 
-		public void CreateHashlnk()
+		public void Create()
 		{
 			IShellItem2 isi;
 			isi = createShellItem(_strFilePath);
 
 			string target = getShortcutTarget(isi);
 			string args = getShortcutArgs(isi);
+
+			target = generalizePath(target);
+
 			UInt32 hash = createHash(isi, target, args, _strSalt);
 
+			IPropertyStore ips = getPropertyStore(isi);
 
 
 		}
