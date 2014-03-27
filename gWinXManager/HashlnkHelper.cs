@@ -66,6 +66,10 @@ namespace gWinXManager
 
 			IPropertyStore ips = getPropertyStore(isi);
 			setHash(ips, hash);
+
+			Marshal.FinalReleaseComObject(ips);
+			Marshal.FinalReleaseComObject(isi);
+			
 		}
 
 		#region Private Func
@@ -84,7 +88,7 @@ namespace gWinXManager
 			{
 				strHash += args;
 			}
-			strHash += args;
+			strHash += salt;
 			strHash = strHash.ToLower();
 
 			byte[] blob = Encoding.Unicode.GetBytes(strHash);
