@@ -25,6 +25,5 @@ namespace gWinXManager
 		{
 			InitializeComponent();
 		}
-
 	}
 }
