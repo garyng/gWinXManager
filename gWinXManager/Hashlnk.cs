@@ -51,8 +51,6 @@ namespace gWinXManager
 		{
 			using (lnkHelper lh = new lnkHelper(_strFilePath))
 			{
-				lh.Load();
-
 				string target = lh.TargetPath;
 				string args = lh.Arguments;
 
@@ -144,6 +142,7 @@ namespace gWinXManager
 				throw ex;
 			}
 		}
+
 		#endregion
 	}
 }

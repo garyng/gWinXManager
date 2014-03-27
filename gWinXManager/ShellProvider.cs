@@ -16,6 +16,42 @@ namespace gWinXManager
 {
 	namespace ShellProvider
 	{
+		#region Const
+
+		public static class STGM
+		{
+			public const int STGM_READ = 0x0;
+			public const int STGM_WRITE = 0x1;
+			public const int STGM_READWRITE = 0x2;
+			public const int STGM_SHARE_DENY_NONE = 0x40;
+			public const int STGM_SHARE_DENY_READ = 0x30;
+			public const int STGM_SHARE_DENY_WRITE = 0x20;
+			public const int STGM_SHARE_EXCLUSIVE = 0x10;
+			public const int STGM_PRIORITY = 0x40000;
+			public const int STGM_CREATE = 0x1000;
+			public const int STGM_CONVERT = 0x20000;
+			public const int STGM_FAILIFTHERE = 0x0;
+			public const int STGM_DIRECT = 0x0;
+			public const int STGM_TRANSACTED = 0x10000;
+			public const int STGM_NOSCRATCH = 0x100000;
+			public const int STGM_NOSNAPSHOT = 0x200000;
+			public const int STGM_SIMPLE = 0x8000000;
+			public const int STGM_DIRECT_SWMR = 0x400000;
+			public const int STGM_DELETEONRELEASE = 0x400000;
+		}
+
+		/// <summary>IShellLink.GetPath fFlags: Flags that specify the type of path information to retrieve</summary>
+		public static class SLGP_FLAGS
+		{
+			/// <summary>Retrieves the standard short (8.3 format) file name</summary>
+			public const int SLGP_SHORTPATH = 0x1;
+			/// <summary>Retrieves the Universal Naming Convention (UNC) path name of the file</summary>
+			public const int SLGP_UNCPRIORITY = 0x2;
+			/// <summary>Retrieves the raw path name. A raw path is something that might not exist and may include environment variables that need to be expanded</summary>
+			public const int SLGP_RAWPATH = 0x4;
+		}
+
+		#endregion
 
 		#region Struct
 
@@ -38,6 +74,24 @@ namespace gWinXManager
 		{
 			public uint uType;
 			public STRRETinternal data;
+		}
+
+		// WIN32_FIND_DATAW Structure
+		[StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+		public struct WIN32_FIND_DATAW
+		{
+			public uint dwFileAttributes;
+			public System.Runtime.InteropServices.ComTypes.FILETIME ftCreationTime;
+			public System.Runtime.InteropServices.ComTypes.FILETIME ftLastAccessTime;
+			public System.Runtime.InteropServices.ComTypes.FILETIME ftLastWriteTime;
+			public uint nFileSizeHigh;
+			public uint nFileSizeLow;
+			public uint dwReserved0;
+			public uint dwReserved1;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = APIs.MAX_PATH)]
+			public string cFileName;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 14)]
+			public string cAlternateFileName;
 		}
 
 		#endregion
@@ -160,7 +214,6 @@ namespace gWinXManager
 			SHGDN_FORADDRESSBAR = 0x4000,
 			SHGDN_FORPARSING = 0x8000,
 		}
-
 
 		#endregion
 
@@ -403,9 +456,9 @@ namespace gWinXManager
 
 		}
 
-		[ComImport,
- InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
- Guid("886D8EEB-8CF2-4446-8D02-CDBA1DBDCF99")]
+		[ComImport]
+		[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[Guid("886D8EEB-8CF2-4446-8D02-CDBA1DBDCF99")]
 		public interface IPropertyStore
 		{
 			uint GetCount([Out] out uint cProps);
@@ -418,6 +471,44 @@ namespace gWinXManager
 			uint Commit();
 		}
 
+		// IShellLink Interface
+		[ComImport]
+		[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+		[Guid("000214F9-0000-0000-C000-000000000046")]
+		public interface IShellLinkW
+		{
+			uint GetPath([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile,
+						 int cchMaxPath, ref WIN32_FIND_DATAW pfd, uint fFlags);
+			uint GetIDList(out IntPtr ppidl);
+			uint SetIDList(IntPtr pidl);
+			uint GetDescription([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName,
+								int cchMaxName);
+			uint SetDescription([MarshalAs(UnmanagedType.LPWStr)] string pszName);
+			uint GetWorkingDirectory([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir,
+									 int cchMaxPath);
+			uint SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+			uint GetArguments([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs,
+							  int cchMaxPath);
+			uint SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
+			uint GetHotKey(out ushort pwHotkey);
+			uint SetHotKey(ushort wHotKey);
+			uint GetShowCmd(out int piShowCmd);
+			uint SetShowCmd(int iShowCmd);
+			uint GetIconLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath,
+								 int cchIconPath, out int piIcon);
+			uint SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string pszIconPath, int iIcon);
+			uint SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel,
+								 uint dwReserved);
+			uint Resolve(IntPtr hwnd, uint fFlags);
+			uint SetPath([MarshalAs(UnmanagedType.LPWStr)] string pszFile);
+		}
+
+		// ShellLink CoClass (ShellLink object)
+		[ComImport]
+		[ClassInterface(ClassInterfaceType.None)]
+		[Guid("00021401-0000-0000-C000-000000000046")]
+		public class CShellLink { }
+
 		#endregion
 
 		#region Win32Apis
@@ -429,6 +520,8 @@ namespace gWinXManager
 			public const int S_OK = 0x00000000;
 			public const int FACILITY_WIN32 = unchecked((int)0x80070000);
 			public const int ERROR_NOT_FOUND = 1168;
+			public const int MAX_PATH = 260;
+			public const int INFOTIPSIZE = 1024;
 
 			#endregion
 

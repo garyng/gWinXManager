@@ -24,6 +24,8 @@ namespace gWinXManager
 		public MainWindow()
 		{
 			InitializeComponent();
+			lnkHelper w = new lnkHelper("C:\\Users\\ZhongBo\\Desktop\\Process Hacker 2.lnk");
 		}
+
 	}
 }

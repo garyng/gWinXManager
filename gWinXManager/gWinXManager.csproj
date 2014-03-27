@@ -72,6 +72,7 @@
     <Compile Include="Hashlnk.cs" />
     <Compile Include="lnkHelper.cs" />
     <Compile Include="ShellProvider.cs" />
+    <Compile Include="WinXHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
