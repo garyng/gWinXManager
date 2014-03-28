@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using gWinXManager.ShellProvider;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using MS.WindowsAPICodePack.Internal;
@@ -36,8 +42,7 @@ namespace gWinXManager
 		private string _strTarget;
 		private string _strArgs;
 		private string _strDes;
-		private int _iIconIndex;
-		private string _strIconLoc;
+		private ImageSource _isIcon;
 
 		private bool _disposed = false;
 
@@ -53,14 +58,24 @@ namespace gWinXManager
 		/// Load a lnk file from the filepath
 		/// </summary>
 		/// <param name="filepath">Filepath to the lnk file</param>
+		/// <param name="isFast">Fast access for retrieving icon info</param>
 		public lnkHelper(string filepath)
 		{
 			_ipfFile = _islwShell as IPersistFile;
-			_ipfFile.Load(filepath, STGM.STGM_READ);
-
+			try
+			{
+				_ipfFile.Load(filepath, STGM.STGM_READ);
+			}
+			catch
+			{
+				throw PathNotFound;
+			}
 			_strFilePath = filepath;
-			loadLnk();
 
+			ImageSource icon = getIconLocation(filepath, false);
+
+			loadLnk();
+			
 		}
 
 		/// <summary>
@@ -69,6 +84,7 @@ namespace gWinXManager
 		public lnkHelper()
 		{
 			_ipfFile = _islwShell as IPersistFile;
+
 			_isNew = true;
 		}
 
@@ -115,6 +131,7 @@ namespace gWinXManager
 				{
 					int hr = (int)_islwShell.SetPath(value);
 					checkResult(hr, SetTargetFailed);
+					_strTarget = value;
 				}
 			}
 		}
@@ -131,6 +148,7 @@ namespace gWinXManager
 				{
 					int hr = (int)_islwShell.SetDescription(value);
 					checkResult(hr, SetDesFailed);
+					_strDes = value;
 				}
 			}
 		}
@@ -147,31 +165,16 @@ namespace gWinXManager
 				{
 					int hr = (int)_islwShell.SetArguments(value);
 					checkResult(hr, SetArgFailed);
+					_strArgs = value;
 				}
 			}
 		}
 
-		public int IconIndex
+		public ImageSource ShortcutIcon
 		{
 			get
 			{
-				return _iIconIndex;
-			}
-			set
-			{
-				_iIconIndex = value;
-			}
-		}
-
-		public string IconLocation
-		{
-			get
-			{
-				return _strIconLoc;
-			}
-			set
-			{
-				_strIconLoc = value;
+				return _isIcon;
 			}
 		}
 
@@ -185,9 +188,8 @@ namespace gWinXManager
 			_strTarget = getShortcutTarget(_isiShell);
 			_strArgs = getShortcutArgs(_isiShell);
 
-			int iconIndex;
-			_strIconLoc = getIconLocation(_islwShell, out iconIndex);
-			_iIconIndex = iconIndex;
+			ImageSource icon = getIconLocation(_strFilePath, false);
+			_isIcon = icon;
 
 			_strDes = getShortcutDescription(_islwShell);
 
@@ -230,14 +232,19 @@ namespace gWinXManager
 			return sb.ToString();
 		}
 
-		private string getIconLocation(IShellLinkW islw, out int iconIndex)
+
+		private ImageSource getIconLocation(string filepath, bool isSmall)
 		{
-			StringBuilder sb = new StringBuilder(1024);
-			int index;
-			int hr = (int)islw.GetIconLocation(sb, sb.Capacity, out index);
-			checkResult(hr, GetIconLocFailed);
-			iconIndex = index;
-			return sb.ToString();
+			SHFILEINFO iconInfo = new SHFILEINFO();
+			uint flags = SHGFI.SHGFI_ICON | (isSmall?SHGFI.SHGFI_SMALLICON : SHGFI.SHGFI_LARGEICON) | SHGFI.SHGFI_USEFILEATTRIBUTES;
+			APIs.SHGetFileInfo(filepath, (uint)FileAttributes.Temporary, ref iconInfo, (uint)Marshal.SizeOf(iconInfo), flags);
+
+			ImageSource icon;
+			using (Icon i = Icon.FromHandle(iconInfo.hIcon))
+			{
+				icon = Imaging.CreateBitmapSourceFromHIcon(i.Handle, new Int32Rect(0, 0, i.Width, i.Height), BitmapSizeOptions.FromEmptyOptions());
+			}
+			return icon;
 		}
 
 		private void setPropertyStoreValue(IPropertyStore ips, PropertyKey pk, PropVariant pv)
@@ -292,10 +299,25 @@ namespace gWinXManager
 				return;
 			}
 
-			Marshal.FinalReleaseComObject(_isiShell);
-			Marshal.FinalReleaseComObject(_ipsStore);
-			Marshal.FinalReleaseComObject(_islwShell);
-			Marshal.FinalReleaseComObject(_ipfFile);
+			if (_isiShell != null)
+			{
+				Marshal.FinalReleaseComObject(_isiShell);
+			}
+
+			if (_ipsStore != null)
+			{
+				Marshal.FinalReleaseComObject(_ipsStore);
+			}
+
+			if (_islwShell != null)
+			{
+				Marshal.FinalReleaseComObject(_islwShell);
+			}
+
+			if (_ipsStore != null)
+			{
+				Marshal.FinalReleaseComObject(_ipfFile);
+			}
 
 			_disposed = true;
 		}

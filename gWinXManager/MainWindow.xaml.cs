@@ -24,7 +24,8 @@ namespace gWinXManager
 		public MainWindow()
 		{
 			InitializeComponent();
-			lnkHelper w = new lnkHelper("C:\\Users\\ZhongBo\\Desktop\\Process Hacker 2.lnk");
+			lnkHelper h = new lnkHelper("C:\\Users\\Public\\Desktop\\iFunbox.lnk");
+			img.Source = h.ShortcutIcon;
 		}
 
 	}

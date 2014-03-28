@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
 
 namespace gWinXManager
 {
@@ -14,13 +15,14 @@ namespace gWinXManager
 		public struct GroupShortcut
 		{
 			public string Group;
-			public List<ShortcutPath> Shortcut;
+			public List<ShortcutInfo> Shortcut;
 		}
 
-		public struct ShortcutPath
+		public struct ShortcutInfo
 		{
 			public string Filename;
 			public string Filepath;
+			public ImageSource Icon;
 		}
 
 		private List<GroupShortcut> _lgsEntries = new List<GroupShortcut>();
@@ -35,7 +37,7 @@ namespace gWinXManager
 			_lgsEntries = listGroups(_strWinXPath, _strExt);
 		}
 
-
+		//Help to rebuild into functions
 		private List<GroupShortcut> listGroups(string folderPath, string ext)
 		{
 			List<GroupShortcut> lgs = new List<GroupShortcut>();
@@ -46,10 +48,12 @@ namespace gWinXManager
 					Group = Path.GetFileName(groupPath),
 					Shortcut = Directory.GetFiles(groupPath,ext).Select(delegate(string shortcutPath)
 					{
-						return new ShortcutPath()
+						lnkHelper lh = new lnkHelper(shortcutPath);
+						return new ShortcutInfo()
 						{
 							Filename = Path.GetFileName(shortcutPath),
-							Filepath = shortcutPath
+							Filepath = shortcutPath,
+							Icon = lh.ShortcutIcon
 						};
 					}).ToList()
 				};
