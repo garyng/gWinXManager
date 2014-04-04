@@ -9,6 +9,7 @@ namespace gWinXManager
 {
 	class WinXHelper
 	{
+		private object _PropertyName;
 		private Dictionary<string, List<ShortcutInfo>> _dEntries = new Dictionary<string, List<ShortcutInfo>>();
 		private const string _strExt = "*.lnk";
 		private string _strWinXPath = (Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Microsoft\Windows\WinX");
@@ -31,6 +32,7 @@ namespace gWinXManager
 		public WinXHelper()
 		{
 			Load();
+			copyFile("C:\\Users\\ZhongBo\\Desktop\\hashlnk.exe.lnk", "C:\\Users\\ZhongBo\\AppData\\Local\\Temp");
 		}
 
 		public void Load()
@@ -38,8 +40,18 @@ namespace gWinXManager
 			this._dEntries = this.listEntries(this._strWinXPath, "*.lnk");
 		}
 
-		private void newEntry()
+		private void addShortcut(string shortcutPath, string groupName)
 		{
+			
+			
+		}
+
+		private void copyFile(string filePath, string targetPath)
+		{
+			if (!File.Exists(targetPath))
+			{
+				throw Exceptions.PathNotFound;
+			}
 		}
 
 		private Dictionary<string, List<ShortcutInfo>> listEntries(string folderPath, string ext)

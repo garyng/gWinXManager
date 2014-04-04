@@ -18,20 +18,6 @@ namespace gWinXManager
 {
 	class lnkHelper : IDisposable
 	{
-		#region Public
-
-		public static Exception PathNotFound = new Exception("Specific file does not exist.");
-		public static Exception GetArgsFailed = new Exception("Failed to retrieve target's arguments.");
-		public static Exception GetDesFailed = new Exception("Failed to retrieve target description.");
-		public static Exception GetIconLocFailed = new Exception("Failed to retrieve target's icon location.");
-		public static Exception PropertyStoreFailed = new Exception("Failed to get property store.");
-		public static Exception PropertySetFailed = new Exception("Failed to set property store value.");
-		public static Exception PropertyCommitFailed = new Exception("Failed to write changes to .lnk.");
-		public static Exception SetTargetFailed = new Exception("Failed to set shortcut's target path.");
-		public static Exception SetDesFailed = new Exception("Failed to set shortcut's description.");
-		public static Exception SetArgFailed = new Exception("Failed to set shortcut's arguments.");
-		
-		#endregion
 
 		#region Private
 
@@ -68,7 +54,7 @@ namespace gWinXManager
 			}
 			catch
 			{
-				throw PathNotFound;
+				throw Exceptions.PathNotFound;
 			}
 			_strFilePath = filepath;
 
@@ -130,7 +116,7 @@ namespace gWinXManager
 				if (_isNew)
 				{
 					int hr = (int)_islwShell.SetPath(value);
-					checkResult(hr, SetTargetFailed);
+					checkResult(hr, Exceptions.SetTargetFailed);
 					_strTarget = value;
 				}
 			}
@@ -147,7 +133,7 @@ namespace gWinXManager
 				if (_isNew)
 				{
 					int hr = (int)_islwShell.SetDescription(value);
-					checkResult(hr, SetDesFailed);
+					checkResult(hr, Exceptions.SetDesFailed);
 					_strDes = value;
 				}
 			}
@@ -164,7 +150,7 @@ namespace gWinXManager
 				if (_isNew)
 				{
 					int hr = (int)_islwShell.SetArguments(value);
-					checkResult(hr, SetArgFailed);
+					checkResult(hr, Exceptions.SetArgFailed);
 					_strArgs = value;
 				}
 			}
@@ -207,7 +193,7 @@ namespace gWinXManager
 			int hr;
 			string target;
 			hr = isi.GetString(PropertyKeys.PKEY_Link_TargetParsingPath, out target);
-			checkResult(hr, PathNotFound);
+			checkResult(hr, Exceptions.PathNotFound);
 			return target;
 		}
 
@@ -218,7 +204,7 @@ namespace gWinXManager
 			hr = isi.GetString(PropertyKeys.PKEY_Link_Arguments, out args);
 			if (hr != APIs.S_OK && hr != APIs.HRESULT_FROM_WIN32(APIs.ERROR_NOT_FOUND))
 			{
-				throw GetArgsFailed;
+				throw Exceptions.GetArgsFailed;
 			}
 
 			return args;
@@ -251,10 +237,10 @@ namespace gWinXManager
 		{
 			int hr;
 			hr = (int)ips.SetValue(pk, pv);
-			checkResult(hr, PropertySetFailed);
+			checkResult(hr, Exceptions.PropertySetFailed);
 
 			hr = (int)ips.Commit();
-			checkResult(hr, PropertyCommitFailed);
+			checkResult(hr, Exceptions.PropertyCommitFailed);
 		}
 
 		private IPropertyStore getPropertyStore(IShellItem2 isi)
@@ -262,7 +248,7 @@ namespace gWinXManager
 			IPropertyStore ips;
 			int hr;
 			hr = isi.GetPropertyStore(GETPROPERTYSTOREFLAGS.GPS_READWRITE, typeof(IPropertyStore).GUID, out ips);
-			checkResult(hr, PropertyStoreFailed);
+			checkResult(hr, Exceptions.PropertyStoreFailed);
 			return ips;
 		}
 

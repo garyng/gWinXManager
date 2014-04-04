@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Exceptions.cs" />
     <Compile Include="Hashlnk.cs" />
     <Compile Include="lnkHelper.cs" />
     <Compile Include="ShellProvider.cs" />

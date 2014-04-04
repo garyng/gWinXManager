@@ -24,8 +24,7 @@ namespace gWinXManager
 		public MainWindow()
 		{
 			InitializeComponent();
-			lnkHelper h = new lnkHelper("C:\\Users\\Public\\Desktop\\iFunbox.lnk");
-			img.Source = h.ShortcutIcon;
+			WinXHelper wx = new WinXHelper();
 		}
 
 	}
