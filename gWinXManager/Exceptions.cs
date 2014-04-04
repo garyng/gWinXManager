@@ -16,5 +16,9 @@ namespace gWinXManager
 		public static Exception SetTargetFailed = new Exception("Failed to set shortcut's target path.");
 		public static Exception SetDesFailed = new Exception("Failed to set shortcut's description.");
 		public static Exception SetArgFailed = new Exception("Failed to set shortcut's arguments.");
+
+		public static Exception GroupNotVaild = new Exception("Not a valid group name.");
+
+		public static Exception HashFailed = new Exception("Failed to hash data.");
 	}
 }

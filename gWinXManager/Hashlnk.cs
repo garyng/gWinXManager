@@ -11,14 +11,12 @@ namespace gWinXManager
 {
 	class Hashlnk
 	{
-		#region Public
-
-		public static Exception HashFailed = new Exception("Failed to hash data.");
-
-		#endregion
 
 		#region Private
+
 		private string _strFilePath;
+		private uint _iHash;
+
 		#endregion
 
 		#region Struct
@@ -57,11 +55,24 @@ namespace gWinXManager
 				target = generalizePath(target);
 
 				UInt32 hash = createHash(target, args, _strSalt);
+				_iHash = hash;
 
 				lh.CreatePropertyStore();
 				PropVariant pv = new PropVariant(hash);
 				pv.VarType = VarEnum.VT_UI4;
 				lh.SetPropertyStoreValue(PropertyKeys.PKEY_WinX_Hash, pv);
+			}
+		}
+
+		#endregion
+
+		#region Public Prop
+
+		public uint Hash
+		{
+			get
+			{
+				return _iHash;
 			}
 		}
 
@@ -129,7 +140,7 @@ namespace gWinXManager
 
 			int hr;
 			hr = APIs.HashData(blob, blob.Length, hashBuffer, hashBuffer.Length);
-			checkResult(hr, HashFailed);
+			checkResult(hr, Exceptions.HashFailed);
 
 			UInt32 hash = BitConverter.ToUInt32(hashBuffer, 0);
 			return hash;
