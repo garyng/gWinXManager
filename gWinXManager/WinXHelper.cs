@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,7 @@ namespace gWinXManager
 			Load();
 			//addShortcut("C:\\Users\\ZhongBo\\Desktop\\hashlnk.exe.lnk", "Group4");
 			//addGroup("Group4");
+			//reloadExplorer();
 		}
 
 		public void Load()
@@ -47,7 +49,7 @@ namespace gWinXManager
 			{
 				string targetPath = Path.Combine(_strWinXPath, groupName);
 				createDirectory(targetPath);
-				
+				_dEntries.Add(groupName, new List<ShortcutInfo>());
 			}
 		}
 
@@ -69,6 +71,23 @@ namespace gWinXManager
 			{
 				throw Exceptions.GroupNotVaild;
 			}			
+		}
+
+		private void reloadExplorer()
+		{
+			foreach (Process p in Process.GetProcesses())
+			{
+				try
+				{
+					if (p.MainModule.FileName.ToLower().EndsWith(":\\windows\\explorer.exe"))
+					{
+						p.Kill();
+						break;
+					}
+				}
+				catch{}
+			}
+			Process.Start("explorer.exe");
 		}
 
 		private string copyFile(string filePath, string targetPath)
@@ -117,5 +136,6 @@ namespace gWinXManager
 			});
 			return entries;
 		}
+
 	}
 }
