@@ -9,13 +9,14 @@ namespace gWinXManager
 {
 	class WinXHelper
 	{
-		private string _strWinXPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\Microsoft\\Windows\\WinX";
-		private const string _strExt = "*.lnk";	
+		private Dictionary<string, List<ShortcutInfo>> _dEntries = new Dictionary<string, List<ShortcutInfo>>();
+		private const string _strExt = "*.lnk";
+		private string _strWinXPath = (Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Microsoft\Windows\WinX");
 
 		public struct GroupShortcut
 		{
 			public string Group;
-			public List<ShortcutInfo> Shortcut;
+			public List<WinXHelper.ShortcutInfo> Shortcut;
 		}
 
 		public struct ShortcutInfo
@@ -34,34 +35,33 @@ namespace gWinXManager
 
 		public void Load()
 		{
-			_lgsEntries = listGroups(_strWinXPath, _strExt);
+			this._dEntries = this.listEntries(this._strWinXPath, "*.lnk");
 		}
 
-		//Help to rebuild into functions
-		private List<GroupShortcut> listGroups(string folderPath, string ext)
+		private void newEntry()
 		{
-			List<GroupShortcut> lgs = new List<GroupShortcut>();
-			Directory.GetDirectories(folderPath).ToList().ForEach(delegate(string groupPath)
+		}
+
+		private Dictionary<string, List<ShortcutInfo>> listEntries(string folderPath, string ext)
+		{
+			Dictionary<string, List<ShortcutInfo>> entries = new Dictionary<string, List<ShortcutInfo>>();
+			Directory.GetDirectories(folderPath).ToList<string>().ForEach(delegate(string groupPath)
 			{
-				GroupShortcut gs = new GroupShortcut()
+				List<ShortcutInfo> ls = new List<ShortcutInfo>();
+				Directory.GetFiles(groupPath, ext).ToList<string>().ForEach(delegate(string shortcutPath)
 				{
-					Group = Path.GetFileName(groupPath),
-					Shortcut = Directory.GetFiles(groupPath,ext).Select(delegate(string shortcutPath)
+					lnkHelper helper = new lnkHelper(shortcutPath);
+					ShortcutInfo item = new ShortcutInfo
 					{
-						lnkHelper lh = new lnkHelper(shortcutPath);
-						return new ShortcutInfo()
-						{
-							Filename = Path.GetFileName(shortcutPath),
-							Filepath = shortcutPath,
-							Icon = lh.ShortcutIcon
-						};
-					}).ToList()
-				};
-
-				lgs.Add(gs);
+						Filename = Path.GetFileName(shortcutPath),
+						Filepath = shortcutPath,
+						Icon = helper.ShortcutIcon
+					};
+					ls.Add(item);
+				});
+				entries.Add(Path.GetFileName(groupPath), ls);
 			});
-
-			return lgs;
+			return entries;
 		}
 	}
 }
