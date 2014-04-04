@@ -31,6 +31,7 @@ namespace gWinXManager
 			//addShortcut("C:\\Users\\ZhongBo\\Desktop\\hashlnk.exe.lnk", "Group4");
 			//addGroup("Group4");
 			//reloadExplorer();
+			//deleteShortcut("4 - Control Panel.lnk", "Group4");
 		}
 
 		public void Load()
@@ -58,7 +59,7 @@ namespace gWinXManager
 			List<ShortcutInfo> lsi = new List<ShortcutInfo>();
 			if (_dEntries.TryGetValue(groupName,out lsi))
 			{
-				string groupPath = _strWinXPath + "\\" + groupName;
+				string groupPath = getPathFromGroupName(groupName);
 				string targetPath =  copyFile(shortcutPath, groupPath);
 				Hashlnk hl = new Hashlnk(targetPath);
 				hl.Create();
@@ -71,6 +72,27 @@ namespace gWinXManager
 			{
 				throw Exceptions.GroupNotVaild;
 			}			
+		}
+
+		private void deleteShortcut(string shortcutName, string groupName)
+		{
+			string shortcutPath = getPathFromGroupName(groupName) + "\\" + shortcutName;
+
+			if (!File.Exists(shortcutPath))
+			{
+				throw Exceptions.PathNotFound;
+			}
+
+			List<ShortcutInfo> lsi = new List<ShortcutInfo>();
+			if (_dEntries.TryGetValue(groupName, out lsi))
+			{
+				_dEntries[groupName].RemoveAll(item => item.Filepath == shortcutPath);
+				deleteFile(shortcutPath);
+			}
+			else
+			{
+				throw Exceptions.GroupNotVaild;
+			}
 		}
 
 		private void reloadExplorer()
@@ -104,9 +126,19 @@ namespace gWinXManager
 			return targetPath;
 		}
 
+		private void deleteFile(string filePath)
+		{
+			File.Delete(filePath);
+		}
+
 		private void createDirectory(string targetPath)
 		{
 			Directory.CreateDirectory(targetPath);
+		}
+
+		private string getPathFromGroupName(string groupName)
+		{
+			return _strWinXPath + "\\" + groupName;
 		}
 
 		private ShortcutInfo loadShortcut(string shortcutPath, string groupPath)
