@@ -7,6 +7,7 @@ using System.Windows.Media;
 
 namespace gWinXManager
 {
+	//TODO : Validate file name (do not contain special characters)
 	class WinXHelper
 	{
 		private object _PropertyName;
@@ -26,6 +27,8 @@ namespace gWinXManager
 		public WinXHelper()
 		{
 			Load();
+			//addShortcut("C:\\Users\\ZhongBo\\Desktop\\hashlnk.exe.lnk", "Group4");
+			//addGroup("Group4");
 		}
 
 		public void Load()
@@ -33,12 +36,27 @@ namespace gWinXManager
 			this._dEntries = this.listEntries(this._strWinXPath, "*.lnk");
 		}
 
+		private void addGroup(string groupName)
+		{
+			List<ShortcutInfo> lsi = new List<ShortcutInfo>();
+			if (_dEntries.TryGetValue(groupName, out lsi))
+			{
+				throw Exceptions.GroupExist;
+			}
+			else
+			{
+				string targetPath = Path.Combine(_strWinXPath, groupName);
+				createDirectory(targetPath);
+				
+			}
+		}
+
 		private void addShortcut(string shortcutPath, string groupName)
 		{
 			List<ShortcutInfo> lsi = new List<ShortcutInfo>();
 			if (_dEntries.TryGetValue(groupName,out lsi))
 			{
-				string groupPath = lsi[0].GroupPath;
+				string groupPath = _strWinXPath + "\\" + groupName;
 				string targetPath =  copyFile(shortcutPath, groupPath);
 				Hashlnk hl = new Hashlnk(targetPath);
 				hl.Create();
@@ -65,6 +83,11 @@ namespace gWinXManager
 
 			File.Copy(filePath, targetPath, true);
 			return targetPath;
+		}
+
+		private void createDirectory(string targetPath)
+		{
+			Directory.CreateDirectory(targetPath);
 		}
 
 		private ShortcutInfo loadShortcut(string shortcutPath, string groupPath)
