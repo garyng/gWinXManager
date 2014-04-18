@@ -1,0 +1,16 @@
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\bin\Debug\gWinXManager.UI.WPF.exe.config
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\bin\Debug\gWinXManager.UI.WPF.exe
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\bin\Debug\gWinXManager.UI.WPF.pdb
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\bin\Debug\gWinXManager.Core.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\bin\Debug\gWinXManager.Core.pdb
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF.csprojResolveAssemblyReference.cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\MainWindow.baml
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\MainWindow.g.cs
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\App.g.cs
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF_MarkupCompile.cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF.g.resources
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF.Properties.Resources.resources
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF.csproj.GenerateResource.Cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF.exe
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WPF\obj\Debug\gWinXManager.UI.WPF.pdb
