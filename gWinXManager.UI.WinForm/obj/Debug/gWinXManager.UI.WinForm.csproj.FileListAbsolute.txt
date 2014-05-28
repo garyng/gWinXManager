@@ -1,0 +1,12 @@
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\bin\Debug\gWinXManager.UI.WinForm.exe.config
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\bin\Debug\gWinXManager.UI.WinForm.exe
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\bin\Debug\gWinXManager.UI.WinForm.pdb
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\obj\Debug\gWinXManager.UI.WinForm.frmMain.resources
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\obj\Debug\gWinXManager.UI.WinForm.Properties.Resources.resources
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\obj\Debug\gWinXManager.UI.WinForm.csproj.GenerateResource.Cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\obj\Debug\gWinXManager.UI.WinForm.exe
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\obj\Debug\gWinXManager.UI.WinForm.pdb
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\obj\Debug\gWinXManager.UI.WinForm.csprojResolveAssemblyReference.cache
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\bin\Debug\gWinXManager.Core.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\bin\Debug\Microsoft.WindowsAPICodePack.dll
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.UI.WinForm\bin\Debug\gWinXManager.Core.pdb

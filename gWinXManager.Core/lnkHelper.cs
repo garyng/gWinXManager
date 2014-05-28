@@ -29,6 +29,7 @@ namespace gWinXManager.Core
 		private string _strArgs;
 		private string _strDes;
 		private ImageSource _isIcon;
+		private Image _IIcon;
 
 		private bool _disposed = false;
 
@@ -164,6 +165,13 @@ namespace gWinXManager.Core
 			}
 		}
 
+		public Image ShortcutIconImage
+		{
+			get
+			{
+				return _IIcon;
+			}
+		}
 		#endregion
 
 		#region Private Func
@@ -176,6 +184,9 @@ namespace gWinXManager.Core
 
 			ImageSource icon = getIconLocation(_strFilePath, false);
 			_isIcon = icon;
+
+			Image iIcon = getBIconLocation(_strFilePath, false);
+			_IIcon = iIcon;
 
 			_strDes = getShortcutDescription(_islwShell);
 
@@ -221,16 +232,29 @@ namespace gWinXManager.Core
 
 		private ImageSource getIconLocation(string filepath, bool isSmall)
 		{
-			SHFILEINFO iconInfo = new SHFILEINFO();
-			uint flags = SHGFI.SHGFI_ICON | (isSmall?SHGFI.SHGFI_SMALLICON : SHGFI.SHGFI_LARGEICON) | SHGFI.SHGFI_USEFILEATTRIBUTES;
-			APIs.SHGetFileInfo(filepath, (uint)FileAttributes.Temporary, ref iconInfo, (uint)Marshal.SizeOf(iconInfo), flags);
 
+			IntPtr hIcon = getIconHandle(filepath, isSmall);
 			ImageSource icon;
-			using (Icon i = Icon.FromHandle(iconInfo.hIcon))
+			using (Icon i = Icon.FromHandle(hIcon))
 			{
 				icon = Imaging.CreateBitmapSourceFromHIcon(i.Handle, new Int32Rect(0, 0, i.Width, i.Height), BitmapSizeOptions.FromEmptyOptions());
 			}
 			return icon;
+		}
+
+		private Image getBIconLocation(string filepath, bool isSmall)
+		{
+			IntPtr hIcon = getIconHandle(filepath, isSmall);
+			Icon i = Icon.FromHandle(hIcon);
+			return (Image)i.ToBitmap();
+		}
+
+		private IntPtr getIconHandle(string filepath, bool isSmall)
+		{
+			SHFILEINFO iconInfo = new SHFILEINFO();
+			uint flags = SHGFI.SHGFI_ICON | (isSmall ? SHGFI.SHGFI_SMALLICON : SHGFI.SHGFI_LARGEICON) | SHGFI.SHGFI_USEFILEATTRIBUTES;
+			APIs.SHGetFileInfo(filepath, (uint)FileAttributes.Temporary, ref iconInfo, (uint)Marshal.SizeOf(iconInfo), flags);
+			return iconInfo.hIcon;
 		}
 
 		private void setPropertyStoreValue(IPropertyStore ips, PropertyKey pk, PropVariant pv)

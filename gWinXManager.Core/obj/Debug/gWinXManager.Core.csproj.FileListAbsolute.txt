@@ -1,6 +1,6 @@
-C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\obj\Debug\gWinXManager.Core.csprojResolveAssemblyReference.cache
 C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\bin\Debug\gWinXManager.Core.dll.config
 C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\bin\Debug\gWinXManager.Core.dll
 C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\bin\Debug\gWinXManager.Core.pdb
 C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\obj\Debug\gWinXManager.Core.dll
 C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\obj\Debug\gWinXManager.Core.pdb
+C:\Users\ZhongBo\Desktop\gWinXManager\gWinXManager.Core\obj\Debug\gWinXManager.Core.csprojResolveAssemblyReference.cache
